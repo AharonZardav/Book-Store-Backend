@@ -17,7 +17,8 @@ public class UserMapper implements RowMapper<CustomUser> {
                 rs.getString("address"),
                 rs.getString("username"),
                 rs.getString("password"),
-                Role.valueOf( rs.getString("role")));
+                Role.valueOf( rs.getString("role"))
+        );
     }
 }
 
