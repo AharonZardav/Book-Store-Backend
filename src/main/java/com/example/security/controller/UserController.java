@@ -53,21 +53,11 @@ public class UserController {
             String jwtToken = token.substring(7);
             String username = jwtUtil.extractUsername(jwtToken);
             updatedUser.setUsername(username);
-            if (updatedUser.getFirstName() == null || updatedUser.getLastName() == null || updatedUser.getEmail() == null) {
-                return new ResponseEntity("User not updated, first name, last name and email are required", HttpStatus.BAD_REQUEST);
+            String result = userService.updateUser(updatedUser);
+            if (result.contains("successfully")) {
+                return new ResponseEntity(result, HttpStatus.OK);
             }
-            CustomUser userFromDB = userService.getUserByUsername(updatedUser.getUsername());
-            if(!userFromDB.getEmail().equals(updatedUser.getEmail())){
-                CustomUser userWithTheSameEmail = userService.getUserByEmail(updatedUser.getEmail());
-                if(userWithTheSameEmail != null){
-                    return new ResponseEntity("User not updated, This email already exist in the system.", HttpStatus.BAD_REQUEST);
-                }
-            }
-            CustomUser user = userService.updateUser(updatedUser);
-            if (user == null) {
-                return new ResponseEntity("User not updated. this user does not exist in the system.", HttpStatus.BAD_REQUEST);
-            }
-            return ResponseEntity.ok(user);
+            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }

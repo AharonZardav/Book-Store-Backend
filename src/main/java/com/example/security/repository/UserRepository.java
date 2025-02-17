@@ -16,9 +16,14 @@ public class UserRepository {
     private static final String USERS_TABLE = "users";
 
     public String register(CustomUser user) {
-        String sql = String.format("INSERT INTO %s (first_name, last_name, email, phone, address, username, password, role) VALUES (?,?,?,?,?,?,?,?)", USERS_TABLE);
-        jdbcTemplate.update(sql, user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone(), user.getAddress(), user.getUsername(), user.getPassword(), user.getRole().name());
-        return "User registered successfully";
+        try {
+            String sql = String.format("INSERT INTO %s (first_name, last_name, email, phone, address, username, password, role) VALUES (?,?,?,?,?,?,?,?)", USERS_TABLE);
+            jdbcTemplate.update(sql, user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone(), user.getAddress(), user.getUsername(), user.getPassword(), user.getRole().name());
+            return "User registered successfully";
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     public CustomUser findUserByUsername(String username) {
@@ -49,15 +54,25 @@ public class UserRepository {
         return users;
     }
 
-    public CustomUser updateUser(CustomUser user) {
-        String sql = String.format("UPDATE %s SET first_name = ?, last_name = ?, email = ?, phone = ?, address = ? WHERE username = ?", USERS_TABLE);
-        jdbcTemplate.update(sql, user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone(), user.getAddress(), user.getUsername());
-        return findUserByUsername(user.getUsername());
+    public String updateUser(CustomUser user) {
+        try {
+            String sql = String.format("UPDATE %s SET first_name = ?, last_name = ?, email = ?, phone = ?, address = ? WHERE username = ?", USERS_TABLE);
+            jdbcTemplate.update(sql, user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone(), user.getAddress(), user.getUsername());
+            return ("User updated successfully: "+findUserByUsername(user.getUsername()));
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     public String deleteUser(String username) {
-        String sql = String.format("DELETE FROM %s WHERE username = ?", USERS_TABLE);
-        jdbcTemplate.update(sql, username);
-        return "User deleted successfully";
+        try {
+            String sql = String.format("DELETE FROM %s WHERE username = ?", USERS_TABLE);
+            jdbcTemplate.update(sql, username);
+            return "User deleted successfully";
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 }
