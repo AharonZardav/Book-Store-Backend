@@ -1,8 +1,8 @@
 package com.example.security.service;
 
 import com.example.security.security.CustomUserDetailsService;
-import com.example.security.model.AuthenticationRequest;
-import com.example.security.model.AuthenticationResponse;
+import com.example.security.model.authentication.AuthenticationRequest;
+import com.example.security.model.authentication.AuthenticationResponse;
 import com.example.security.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;

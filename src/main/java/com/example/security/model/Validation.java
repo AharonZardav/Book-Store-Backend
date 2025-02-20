@@ -1,5 +1,6 @@
 package com.example.security.model;
 
+import java.time.LocalDate;
 import java.util.regex.Pattern;
 
 public class Validation {
@@ -21,6 +22,13 @@ public class Validation {
     //Can include spaces, can include numbers, minimum 3 characters
     public static boolean isValidAddress(String address){
         return Pattern.matches("^[a-zA-Z0-9\\s,-]{3,}$", address);
+    }
+
+    public static String validateAddress(String address){
+        if (!isValidAddress(address)){
+            return "The address you entered is not valid. Please make sure it contains only valid characters(letters, numbers, spaces, commas, and hyphens) at least 3 characters";
+        }
+        return null;
     }
 
     //Can contain English letters (uppercase and lowercase),

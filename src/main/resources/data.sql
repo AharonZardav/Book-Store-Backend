@@ -16,7 +16,7 @@ CREATE TABLE items (
     item_id INT AUTO_INCREMENT,
     title VARCHAR(255) UNIQUE NOT NULL,
     image_path VARCHAR(255) NOT NULL,
-    price INT NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
     quantity INT NOT NULL,
     PRIMARY KEY (item_id)
 );
@@ -41,3 +41,16 @@ CREATE TABLE orders_items (
     FOREIGN KEY (order_id) REFERENCES orders(order_id),
     FOREIGN KEY (item_id) REFERENCES items(item_id)
 );
+
+INSERT INTO items(title, image_path, price, quantity)
+VALUES
+    ('Investments for lazy people','https://katzr.net/6a091f', 49.50, 20),
+    ('The generous tree','https://katzr.net/6a091f', 34.90, 20),
+    ('Harry Potter','https://katzr.net/6a091f', 72.79, 20),
+    ('diary of a wimpy kid','https://katzr.net/6a091f', 39.90, 20),
+    ('surrounded by idiots','https://katzr.net/6a091f', 49.90, 20),
+    ('The four agreements','https://katzr.net/6a091f', 44.40, 20),
+    ('cant hurt me','https://katzr.net/6a091f', 49.90, 20),
+    ('atomic habits','https://katzr.net/6a091f', 49.90, 20),
+    ('rich dad poor dad','https://katzr.net/6a091f', 49.90, 20),
+    ('The psychology of money','https://katzr.net/6a091f', 49.90, 20);

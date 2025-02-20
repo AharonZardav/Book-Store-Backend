@@ -31,8 +31,8 @@ public class SecurityConfigure implements WebMvcConfigurer {
                 .cors(Customizer.withDefaults()) // Enable cors for Spring Security
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/authenticate", "/users/register",
-                                "/h2-console/**").permitAll() // Public endpoints
-                        .requestMatchers("/users/**").hasAnyAuthority("USER", "ADMIN")
+                                "/h2-console/**", "/items/**").permitAll() // Public endpoints
+                        .requestMatchers("/users/**, /orders/**").hasAnyAuthority("USER", "ADMIN")
                         .requestMatchers("/admin/**").hasAuthority("ADMIN") // Admin-only routes
                         .anyRequest().authenticated() // Require authentication for all other requests
                 )

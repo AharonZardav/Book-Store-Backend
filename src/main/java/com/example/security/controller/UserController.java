@@ -1,6 +1,6 @@
 package com.example.security.controller;
 
-import com.example.security.model.CustomUser;
+import com.example.security.model.user.CustomUser;
 import com.example.security.service.UserService;
 import com.example.security.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +40,9 @@ public class UserController {
             String jwtToken = token.substring(7);
             String username = jwtUtil.extractUsername(jwtToken);
             CustomUser user = userService.getUserByUsername(username);
+            if (user == null){
+                return new ResponseEntity(user, HttpStatus.NOT_FOUND);
+            }
             return ResponseEntity.ok(user);
         } catch (Exception e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

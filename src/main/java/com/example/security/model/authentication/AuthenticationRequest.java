@@ -1,4 +1,4 @@
-package com.example.security.model;
+package com.example.security.model.authentication;
 
 import java.io.Serializable;
 

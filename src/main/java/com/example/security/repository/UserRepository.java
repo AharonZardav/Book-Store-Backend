@@ -1,6 +1,6 @@
 package com.example.security.repository;
 
-import com.example.security.model.CustomUser;
+import com.example.security.model.user.CustomUser;
 import com.example.security.repository.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
 public class UserRepository {
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -17,8 +18,8 @@ public class UserRepository {
 
     public String register(CustomUser user) {
         try {
-            String sql = String.format("INSERT INTO %s (first_name, last_name, email, phone, address, username, password, role) VALUES (?,?,?,?,?,?,?,?)", USERS_TABLE);
-            jdbcTemplate.update(sql, user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone(), user.getAddress(), user.getUsername(), user.getPassword(), user.getRole().name());
+            String sql = String.format("INSERT INTO %s (first_name, last_name, email, phone, address, username, password) VALUES (?,?,?,?,?,?,?)", USERS_TABLE);
+            jdbcTemplate.update(sql, user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone(), user.getAddress(), user.getUsername(), user.getPassword());
             return "User registered successfully";
         } catch (Exception e){
             System.out.println(e.getMessage());
@@ -49,9 +50,14 @@ public class UserRepository {
     }
 
     public List<CustomUser> findAllUsers() {
-        String sql = String.format("SELECT * FROM %s", USERS_TABLE);
-        List<CustomUser> users = jdbcTemplate.query(sql, new UserMapper());
-        return users;
+        try {
+            String sql = String.format("SELECT * FROM %s", USERS_TABLE);
+            List<CustomUser> users = jdbcTemplate.query(sql, new UserMapper());
+            return users;
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     public String updateUser(CustomUser user) {

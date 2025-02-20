@@ -1,32 +1,33 @@
-package com.example.security.model;
+package com.example.security.model.item;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Item {
-    private int id;
+    @JsonProperty(value = "item_id")
+    private int itemId;
     private String title;
     @JsonProperty(value = "image_path")
     private String imagePath;
-    private int price;
+    private double price;
     private int quantity;
 
     public Item() {
     }
 
-    public Item(int id, String title, String imagePath, int price, int quantity) {
-        this.id = id;
+    public Item(int itemId, String title, String imagePath, double price, int quantity) {
+        this.itemId = itemId;
         this.title = title;
         this.imagePath = imagePath;
         this.price = price;
         this.quantity = quantity;
     }
 
-    public int getId() {
-        return id;
+    public int getItemId() {
+        return itemId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setItemId(int id) {
+        this.itemId = id;
     }
 
     public String getTitle() {
@@ -45,11 +46,11 @@ public class Item {
         this.imagePath = imagePath;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -59,5 +60,16 @@ public class Item {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "itemId=" + itemId +
+                ", title='" + title + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                '}';
     }
 }

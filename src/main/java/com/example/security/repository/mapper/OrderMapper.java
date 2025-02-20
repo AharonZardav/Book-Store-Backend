@@ -1,7 +1,7 @@
 package com.example.security.repository.mapper;
 
-import com.example.security.model.Order;
-import com.example.security.model.Status;
+import com.example.security.model.order.Order;
+import com.example.security.model.enums.Status;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

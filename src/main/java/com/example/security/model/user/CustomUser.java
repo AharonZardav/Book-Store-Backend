@@ -1,5 +1,6 @@
-package com.example.security.model;
+package com.example.security.model.user;
 
+import com.example.security.model.enums.Role;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CustomUser {

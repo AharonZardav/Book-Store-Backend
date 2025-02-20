@@ -1,7 +1,7 @@
 package com.example.security.controller;
 
-import com.example.security.model.AuthenticationRequest;
-import com.example.security.model.AuthenticationResponse;
+import com.example.security.model.authentication.AuthenticationRequest;
+import com.example.security.model.authentication.AuthenticationResponse;
 import com.example.security.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,7 @@
 package com.example.security.repository.mapper;
 
-import com.example.security.model.CustomUser;
-import com.example.security.model.Role;
+import com.example.security.model.user.CustomUser;
+import com.example.security.model.enums.Role;
 import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;

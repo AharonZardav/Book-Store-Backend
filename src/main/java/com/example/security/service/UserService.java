@@ -1,7 +1,7 @@
 package com.example.security.service;
 
-import com.example.security.model.CustomUser;
-import com.example.security.model.Role;
+import com.example.security.model.user.CustomUser;
+import com.example.security.model.enums.Role;
 import com.example.security.model.Validation;
 import com.example.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,4 +109,3 @@ public class UserService {
     }
 
 }
-
