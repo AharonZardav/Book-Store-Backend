@@ -97,7 +97,7 @@ public class OrderController {
             String username = jwtUtil.extractUsername(jwtToken);
             OrderList orderList= orderService.getAllUserOrders(username);
             if (orderList == null) {
-                return new ResponseEntity(orderList, HttpStatus.NO_CONTENT);
+                return new ResponseEntity(null, HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity(orderList, HttpStatus.OK);
         } catch (Exception e) {

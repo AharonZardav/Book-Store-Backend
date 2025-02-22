@@ -21,11 +21,6 @@ public class ItemService {
         return itemRepository.findItemById(itemId);
     }
 
-//    public int findItemQuantityInStock(int itemId){
-//        Item item = itemRepository.findItemQuantityInStock(itemId);
-//        return item.getQuantity();
-//    }
-
     public List<Item> getAllItems(){
         return itemRepository.findAllItems();
     }

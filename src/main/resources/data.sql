@@ -42,6 +42,15 @@ CREATE TABLE orders_items (
     FOREIGN KEY (item_id) REFERENCES items(item_id)
 );
 
+--Create favorites item list
+CREATE TABLE favorites_list (
+    username VARCHAR(255) NOT NULL,
+    item_id INT NOT NULL,
+    PRIMARY KEY (username, item_id),
+    FOREIGN KEY (username) REFERENCES users(username),
+    FOREIGN KEY (item_id) REFERENCES items(item_id)
+);
+
 INSERT INTO items(title, image_path, price, quantity)
 VALUES
     ('Investments for lazy people','https://katzr.net/6a091f', 49.50, 20),

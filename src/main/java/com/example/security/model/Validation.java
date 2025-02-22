@@ -1,6 +1,5 @@
 package com.example.security.model;
 
-import java.time.LocalDate;
 import java.util.regex.Pattern;
 
 public class Validation {

@@ -36,16 +36,6 @@ public class ItemRepository {
         }
     }
 
-//    public Item findItemQuantityInStock(int itemId) {
-//        try {
-//            String sql = String.format("SELECT quantity FROM %s WHERE item_id = ?", ITEMS_TABLE);
-//            return jdbcTemplate.queryForObject(sql, new ItemMapper(),itemId);
-//        } catch (Exception e){
-//            System.out.println(e.getMessage());
-//            return null;
-//        }
-//    }
-
     public List<Item> findAllItems() {
         String sql = String.format("SELECT * FROM %s", ITEMS_TABLE);
         List<Item> items = jdbcTemplate.query(sql, new ItemMapper());
