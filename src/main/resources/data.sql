@@ -29,7 +29,7 @@ CREATE TABLE orders (
     shipping_address VARCHAR(255) NOT NULL,
     order_status VARCHAR(10) DEFAULT 'OPEN',
     PRIMARY KEY (order_id),
-    FOREIGN KEY (username) REFERENCES users(username)
+    FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE
 );
 
 --Create linking table for orders and items
@@ -38,8 +38,8 @@ CREATE TABLE orders_items (
     item_id INT NOT NULL,
     quantity_in_order INT NOT NULL,
     PRIMARY KEY (order_id, item_id),
-    FOREIGN KEY (order_id) REFERENCES orders(order_id),
-    FOREIGN KEY (item_id) REFERENCES items(item_id)
+    FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES items(item_id) ON DELETE CASCADE
 );
 
 --Create favorites item list
@@ -47,8 +47,8 @@ CREATE TABLE favorites_list (
     username VARCHAR(255) NOT NULL,
     item_id INT NOT NULL,
     PRIMARY KEY (username, item_id),
-    FOREIGN KEY (username) REFERENCES users(username),
-    FOREIGN KEY (item_id) REFERENCES items(item_id)
+    FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES items(item_id) ON DELETE CASCADE
 );
 
 INSERT INTO items(title, image_path, price, quantity)
