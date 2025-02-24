@@ -110,6 +110,8 @@ public class OrderService {
             return "Item not removed: You cant remove item if you don't have an open order";
         } else {
             int orderId = openOrder.getOrderId();
+            List<OrderItem> items = orderRepository.findOrderItems(orderId);
+            openOrder.setItems(items);
 
             if (quantityToRemoveFromOrder <= 0) {
                 return "Item not removed: Quantity must be at least 1";
