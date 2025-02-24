@@ -30,7 +30,7 @@ public class OrderController {
     private ItemService itemService;
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    @PostMapping(value = "/addItem")
+    @PostMapping(value = "/add-item")
     public ResponseEntity<String> addItemToOrder(@RequestHeader(value = "Authorization") String token, @RequestBody ItemRequest itemRequest){
         try {
             String jwtToken = token.substring(7);
@@ -52,7 +52,7 @@ public class OrderController {
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    @PutMapping(value = "/removeItem")
+    @PutMapping(value = "/remove-item")
     public ResponseEntity<String> removeItemFromOrder(@RequestHeader(value = "Authorization") String token, @RequestBody ItemRequest itemRequest){
         try {
             String jwtToken = token.substring(7);
