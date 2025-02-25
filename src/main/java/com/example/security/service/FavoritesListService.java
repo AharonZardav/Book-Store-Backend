@@ -1,6 +1,5 @@
 package com.example.security.service;
 
-import com.example.security.model.FavoriteItem;
 import com.example.security.model.FavoriteItemResponse;
 import com.example.security.model.item.Item;
 import com.example.security.repository.FavoritesListRepository;
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class FavoritesListService {
@@ -19,7 +19,7 @@ public class FavoritesListService {
     @Autowired
     private ItemService itemService;
 
-    public List<Integer> getFavoritesList(String username){
+    public List<FavoriteItemResponse> getFavoritesList(String username){
         return favoritesListRepository.findFavoriteItems(username);
     }
 
@@ -52,7 +52,7 @@ public class FavoritesListService {
     }
 
     public String removeAllItemsFromFavoriteList(String username){
-        List<Integer> favoriteItemList = favoritesListRepository.findFavoriteItems(username);
+        List<FavoriteItemResponse> favoriteItemList = favoritesListRepository.findFavoriteItems(username);
         if (favoriteItemList == null || favoriteItemList.isEmpty()){
             return "Favorites list not updated: Your Favorites list is already empty";
         }

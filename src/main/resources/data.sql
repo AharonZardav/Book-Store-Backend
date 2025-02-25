@@ -53,13 +53,13 @@ CREATE TABLE favorites_list (
 
 INSERT INTO items(title, image_path, price, quantity)
 VALUES
-    ('Investments for lazy people','https://katzr.net/6a091f', 49.50, 20),
-    ('The generous tree','https://katzr.net/6a091f', 34.90, 20),
-    ('Harry Potter','https://katzr.net/6a091f', 72.79, 20),
-    ('diary of a wimpy kid','https://katzr.net/6a091f', 39.90, 20),
-    ('surrounded by idiots','https://katzr.net/6a091f', 49.90, 20),
-    ('The four agreements','https://katzr.net/6a091f', 44.40, 20),
-    ('cant hurt me','https://katzr.net/6a091f', 49.90, 20),
-    ('atomic habits','https://katzr.net/6a091f', 49.90, 20),
-    ('rich dad poor dad','https://katzr.net/6a091f', 49.90, 20),
-    ('The psychology of money','https://katzr.net/6a091f', 49.90, 20);
+    ('השקעות לעצלנים','https://www.e-vrit.co.il/Images/Products/NewBO/Products/21677/tamir_mandovsky500x790.jpg', 49.50, 20),
+    ('העץ הנדיב','https://www.e-vrit.co.il/Images/Products/ModanMasters/haezhanadiv_master.jpg', 34.90, 20),
+    ('הארי פוטר ואבן החכמים','https://upload.wikimedia.org/wikipedia/he/3/3c/%D7%94%D7%90%D7%A8%D7%99_%D7%A4%D7%95%D7%98%D7%A8_%D7%95%D7%90%D7%91%D7%9F_%D7%94%D7%97%D7%9B%D7%9E%D7%99%D7%9D_%D7%A1%D7%A4%D7%A8.jpeg', 72.79, 20),
+    ('יומנו של חנון','https://upload.wikimedia.org/wikipedia/he/f/fc/Wimpy.jpg', 39.90, 20),
+    ('מוקף באידיוטים','https://images-evrit.yit.co.il/Images/Products/covers_2019_b/mukaf_master.jpg', 49.90, 20),
+    ('ארבעת ההסכמות','https://media.getmood.io/warehouse/dynamic/197580.jpg', 44.40, 20),
+    ('cant hurt me','https://m.media-amazon.com/images/I/81gTRv2HXrL.jpg', 49.90, 20),
+    ('הרגלים אטומיים','https://www.elderech.co.il/wp-content/uploads/2022/03/%D7%A2%D7%99%D7%A6%D7%95%D7%91-%D7%9C%D7%9C%D7%90-%D7%A9%D7%9D-2022-03-07T172841.350-e1646751312452.png', 49.90, 20),
+    ('אבא עשיר אבא עני','https://images-evrit.yit.co.il/Images/Products/NewBO/Products/24654/richDad_Master.jpg', 49.90, 20),
+    ('הפסיכולוגיה של הכסף','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGFCVPD77PhVH4ld7tUbDuXKOsfxwJGFm7bg&s', 49.90, 20);
