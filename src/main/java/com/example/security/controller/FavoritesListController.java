@@ -1,7 +1,7 @@
 package com.example.security.controller;
 
-import com.example.security.model.FavoriteItemResponse;
 import com.example.security.model.ItemTitleRequest;
+import com.example.security.model.item.Item;
 import com.example.security.service.FavoritesListService;
 import com.example.security.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +25,12 @@ public class FavoritesListController {
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping(value = "/all")
-    public ResponseEntity<List<FavoriteItemResponse>> getFavoritesList(@RequestHeader(value = "Authorization") String token){
+    public ResponseEntity<List<Item>> getFavoritesList(@RequestHeader(value = "Authorization") String token){
         try {
             String jwtToken = token.substring(7);
             String username = jwtUtil.extractUsername(jwtToken);
 
-            List<FavoriteItemResponse> favoriteItemsList= favoritesListService.getFavoritesList(username);
+            List<Item> favoriteItemsList= favoritesListService.getFavoritesList(username);
             if (favoriteItemsList == null) {
                 return new ResponseEntity(null, HttpStatus.NO_CONTENT);
             }
@@ -77,7 +77,7 @@ public class FavoritesListController {
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @DeleteMapping(value = "/remove-all")
-    public ResponseEntity<List<FavoriteItemResponse>> removeAllItemsFromFavoriteList(@RequestHeader(value = "Authorization") String token){
+    public ResponseEntity<List<Item>> removeAllItemsFromFavoriteList(@RequestHeader(value = "Authorization") String token){
         try {
             String jwtToken = token.substring(7);
             String username = jwtUtil.extractUsername(jwtToken);

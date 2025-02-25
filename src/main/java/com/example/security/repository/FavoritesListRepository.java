@@ -1,14 +1,12 @@
 package com.example.security.repository;
 
-import com.example.security.model.FavoriteItem;
-import com.example.security.model.FavoriteItemResponse;
-import com.example.security.repository.mapper.FavoriteItemResponseMapper;
+import com.example.security.model.item.Item;
+import com.example.security.repository.mapper.ItemMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class FavoritesListRepository {
@@ -19,10 +17,10 @@ public class FavoritesListRepository {
     private static final String FAVORITES_LIST_TABLE = "favorites_list";
     private static final String ITEMS_TABLE = "items";
 
-    public List<FavoriteItemResponse> findFavoriteItems(String username){
+    public List<Item> findFavoriteItems(String username){
         try {
-            String sql = String.format("SELECT f.item_id, i.title FROM %s f JOIN %s i ON f.item_id = i.item_id where f.username = ?", FAVORITES_LIST_TABLE, ITEMS_TABLE);
-            return jdbcTemplate.query(sql, new FavoriteItemResponseMapper(), username);
+            String sql = String.format("SELECT f.item_id, i.* FROM %s f JOIN %s i ON f.item_id = i.item_id where f.username = ?", FAVORITES_LIST_TABLE, ITEMS_TABLE);
+            return jdbcTemplate.query(sql, new ItemMapper(), username);
         } catch (Exception e){
             System.out.println(e.getMessage());
             return null;
