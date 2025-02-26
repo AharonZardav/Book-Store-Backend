@@ -51,6 +51,10 @@ CREATE TABLE favorites_list (
     FOREIGN KEY (item_id) REFERENCES items(item_id) ON DELETE CASCADE
 );
 
+--username: aharonzardav || password: Az123321@
+INSERT INTO users(first_name, last_name, email, phone, address, username, password)
+VALUES('Aharon', 'Zardav', 'aharonzazrdav8@gmail.com', '0503337936', 'Ahisamach, Shivaat Hminim 21', 'aharonzardav', '$2a$10$sBSKLbWjWLwhqor4yNKz8e/pbHnDi2TnfPnJDbK8yGQwqZ5ZRuJEm');
+
 INSERT INTO items(title, image_path, price, quantity)
 VALUES
     ('השקעות לעצלנים','https://www.e-vrit.co.il/Images/Products/NewBO/Products/21677/tamir_mandovsky500x790.jpg', 49.50, 20),
