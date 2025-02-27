@@ -1,9 +1,9 @@
 package com.example.security.repository;
 
+import com.example.security.model.item.Item;
 import com.example.security.model.order.Order;
 import com.example.security.model.enums.Status;
-import com.example.security.model.order.OrderItem;
-import com.example.security.repository.mapper.OrderItemMapper;
+import com.example.security.repository.mapper.ItemMapper;
 import com.example.security.repository.mapper.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,6 +20,7 @@ public class OrderRepository {
 
     private static final String ORDERS_TABLE = "orders";
     private static final String ORDERS_ITEMS_TABLE = "orders_items";
+    private static final String ITEMS_TABLE = "items";
 
 
     public String createNewOrder(Order order) {
@@ -129,10 +130,10 @@ public class OrderRepository {
         }
     }
 
-    public List<OrderItem> findOrderItems(int orderId) {
+    public List<Item> findOrderItems(int orderId) {
         try {
-            String sql = String.format("SELECT * FROM %s WHERE order_id = ?", ORDERS_ITEMS_TABLE);
-            return jdbcTemplate.query(sql, new OrderItemMapper(), orderId);
+            String sql = String.format("SELECT i.item_id, i.title, i.image_path, i.price, oi.quantity_in_order as quantity FROM %s oi JOIN %s i ON oi.item_id = i.item_id WHERE oi.order_id = ?", ORDERS_ITEMS_TABLE, ITEMS_TABLE);
+            return jdbcTemplate.query(sql, new ItemMapper(), orderId);
         } catch (Exception e){
             System.out.println(e.getMessage());
             return null;

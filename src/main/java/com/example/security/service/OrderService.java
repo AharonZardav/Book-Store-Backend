@@ -3,7 +3,6 @@ package com.example.security.service;
 import com.example.security.model.*;
 import com.example.security.model.item.Item;
 import com.example.security.model.order.Order;
-import com.example.security.model.order.OrderItem;
 import com.example.security.model.order.OrderList;
 import com.example.security.model.order.OrderRequest;
 import com.example.security.model.user.CustomUser;
@@ -11,7 +10,6 @@ import com.example.security.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -110,7 +108,7 @@ public class OrderService {
             return "Item not removed: You cant remove item if you don't have an open order";
         } else {
             int orderId = openOrder.getOrderId();
-            List<OrderItem> items = orderRepository.findOrderItems(orderId);
+            List<Item> items = orderRepository.findOrderItems(orderId);
             openOrder.setItems(items);
 
             if (quantityToRemoveFromOrder <= 0) {
@@ -163,13 +161,13 @@ public class OrderService {
         if (openOrder == null){
             return "Order not closed: You cant close order if you don't have an open order";
         }
-        List<OrderItem> itemsInOpenOrder= openOrder.getItems();
+        List<Item> itemsInOpenOrder= openOrder.getItems();
         if (itemsInOpenOrder == null){
             return "Order not closed: You don't have items in your order";
         }
-        for (OrderItem orderItem : itemsInOpenOrder){
+        for (Item orderItem : itemsInOpenOrder){
             int itemId = orderItem.getItemId();
-            int quantityInOrder = orderItem.getQuantityInOrder();
+            int quantityInOrder = orderItem.getQuantity();
             String buyItem = itemService.buyItem(itemId, quantityInOrder);
             if (buyItem.contains("failed")){
                 return buyItem;
@@ -179,10 +177,10 @@ public class OrderService {
         //handle closed orders
         List<Order> closedOrders = userOrders.getClosedOrders();
         for (Order closeOrder : closedOrders){
-            List<OrderItem> itemsInClosedOrder = closeOrder.getItems();
-            for (OrderItem orderItem : itemsInClosedOrder){
+            List<Item> itemsInClosedOrder = closeOrder.getItems();
+            for (Item orderItem : itemsInClosedOrder){
                 int itemId = orderItem.getItemId();
-                int quantityInOrder = orderItem.getQuantityInOrder();
+                int quantityInOrder = orderItem.getQuantity();
                 String buyItem = itemService.buyItem(itemId, quantityInOrder);
                 if (buyItem.contains("failed")){
                     return buyItem;
@@ -196,14 +194,14 @@ public class OrderService {
         Order openOrder = orderRepository.findOpenUserOrder(username);
         if (openOrder != null){
             int orderId = openOrder.getOrderId();
-            List<OrderItem> items = orderRepository.findOrderItems(orderId);
+            List<Item> items = orderRepository.findOrderItems(orderId);
             openOrder.setItems(items);
         }
         List<Order> closedOrders = orderRepository.findAllClosedUserOrders(username);
         if (!closedOrders.isEmpty()){
             for (Order closedOrder : closedOrders){
                 int orderId = closedOrder.getOrderId();
-                List<OrderItem> items = orderRepository.findOrderItems(orderId);
+                List<Item> items = orderRepository.findOrderItems(orderId);
                 closedOrder.setItems(items);
             }
         }

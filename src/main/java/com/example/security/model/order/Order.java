@@ -1,6 +1,7 @@
 package com.example.security.model.order;
 
 import com.example.security.model.enums.Status;
+import com.example.security.model.item.Item;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
@@ -17,7 +18,7 @@ public class Order {
     private String shippingAddress;
     @JsonProperty(value = "order_status")
     private Status orderStatus;
-    private List<OrderItem> items;
+    private List<Item> items;
 
     public Order() {
     }
@@ -77,11 +78,11 @@ public class Order {
         this.orderStatus = orderStatus;
     }
 
-    public List<OrderItem> getItems() {
+    public List<Item> getItems() {
         return items;
     }
 
-    public void setItems(List<OrderItem> items) {
+    public void setItems(List<Item> items) {
         this.items = items;
     }
 
