@@ -65,40 +65,63 @@ public class OrderService {
             }
         }
 
+        openOrder = orderRepository.findOpenUserOrder(username);
+        List<Item> openOrderItems = orderRepository.findOrderItems(openOrder.getOrderId());
         //Input integrity check
-        Order currentOrder = orderRepository.findOpenUserOrder(username);
-        int orderId = currentOrder.getOrderId();
-
-        if (!orderRepository.isOrderBelongToUser(username, orderId)) {
+        if (!orderRepository.isOrderBelongToUser(username, openOrder.getOrderId())) {
+            if (openOrderItems.isEmpty()){
+                String deleteEmptyOrder = orderRepository.deleteEmptyOrder(username, openOrder.getOrderId());
+                return "There are no items left in the order: " + ". " + deleteEmptyOrder;
+            }
             return "Item not added: You are not allowed to add item to an order that does not belong to you";
         }
 
         if (title == null){
-            return "Item not removed: Item title is required";
+            if (openOrderItems.isEmpty()){
+                String deleteEmptyOrder = orderRepository.deleteEmptyOrder(username, openOrder.getOrderId());
+                return "There are no items left in the order: " + ". " + deleteEmptyOrder;
+            }
+            return "Item not added: Item title is required";
         }
         Item item = itemService.getItemByTitle(title);
         if (item == null) {
+            if (openOrderItems.isEmpty()){
+                String deleteEmptyOrder = orderRepository.deleteEmptyOrder(username, openOrder.getOrderId());
+                return "There are no items left in the order: " + ". " + deleteEmptyOrder;
+            }
             return "Item not added: Item with this title dose not exist";
         }
         if (quantityInOrder <= 0) {
+            if (openOrderItems.isEmpty()){
+                String deleteEmptyOrder = orderRepository.deleteEmptyOrder(username, openOrder.getOrderId());
+                return "There are no items left in the order: " + ". " + deleteEmptyOrder;
+            }
             return "Item not added: Quantity must be at least 1";
         }
         int quantityInStock = itemService.getItemByTitle(title).getQuantity();
         if (quantityInStock < quantityInOrder) {
+            if (openOrderItems.isEmpty()){
+                String deleteEmptyOrder = orderRepository.deleteEmptyOrder(username, openOrder.getOrderId());
+                return "There are no items left in the order: " + ". " + deleteEmptyOrder;
+            }
             return "Item not added: Not enough items in stock";
         }
 
         int itemId = item.getItemId();
-        if (orderRepository.isItemInOrder(orderId, itemId)) {
+        if (orderRepository.isItemInOrder(openOrder.getOrderId(), itemId)) {
             int itemQuantityInStock = item.getQuantity();
-            int existingQuantityInOrder = orderRepository.findItemQuantityInOrder(orderId, itemId);
+            int existingQuantityInOrder = orderRepository.findItemQuantityInOrder(openOrder.getOrderId(), itemId);
             int updatedQuantity = existingQuantityInOrder + quantityInOrder;
             if (itemQuantityInStock < updatedQuantity) {
+                if (openOrderItems.isEmpty()){
+                    String deleteEmptyOrder = orderRepository.deleteEmptyOrder(username, openOrder.getOrderId());
+                    return "There are no items left in the order: " + ". " + deleteEmptyOrder;
+                }
                 return "Item not added: Not enough items in stock";
             }
-            return orderRepository.updateItemQuantityInOrder(orderId, itemId, updatedQuantity);
+            return orderRepository.updateItemQuantityInOrder(openOrder.getOrderId(), itemId, updatedQuantity);
         }
-        return orderRepository.addItemToOrder(orderId, itemId, quantityInOrder);
+        return orderRepository.addItemToOrder(openOrder.getOrderId(), itemId, quantityInOrder);
     }
 
     public String removeItemFromOrder(String username, String title, int quantityToRemoveFromOrder){
@@ -135,14 +158,11 @@ public class OrderService {
             int updatedQuantity = existingQuantityInOrder - quantityToRemoveFromOrder;
             if (updatedQuantity == 0) {
                 String removeItemFromOrder = orderRepository.removeItemFromOrder(orderId, itemId);
-                if (removeItemFromOrder.contains("successfully") && openOrder.getItems().isEmpty()) {
-                    String closeOrder = closeOrder(username);
-                    if (closeOrder == null) {
-                        return "Order not closed: Unknown error occurred";
-                    }
-                    if (closeOrder.contains("successfully")) {
+                if (removeItemFromOrder.contains("successfully")){
+                    List<Item> openOrderItems = orderRepository.findOrderItems(openOrder.getOrderId());
+                    if (openOrderItems.isEmpty()) {
                         String deleteEmptyOrder = orderRepository.deleteEmptyOrder(username, orderId);
-                        return "There are no items left in the order: " + closeOrder + ". " + deleteEmptyOrder;
+                        return "There are no items left in the order: " + ". " + deleteEmptyOrder;
                     }
                 }
             }
@@ -151,18 +171,13 @@ public class OrderService {
     }
 
     public String closeOrder(String username){
-        OrderList userOrders = getAllUserOrders(username);
-        if (userOrders == null){
-            return "Order not closed: You don't have orders yet";
-        }
 
-        //handle open order
-        Order openOrder = userOrders.getOpenOrder();
+        Order openOrder = orderRepository.findOpenUserOrder(username);
         if (openOrder == null){
             return "Order not closed: You cant close order if you don't have an open order";
         }
-        List<Item> itemsInOpenOrder= openOrder.getItems();
-        if (itemsInOpenOrder == null){
+        List<Item> itemsInOpenOrder= orderRepository.findOrderItems(openOrder.getOrderId());
+        if (itemsInOpenOrder == null || itemsInOpenOrder.isEmpty()){
             return "Order not closed: You don't have items in your order";
         }
         for (Item orderItem : itemsInOpenOrder){
@@ -175,18 +190,18 @@ public class OrderService {
         }
 
         //handle closed orders
-        List<Order> closedOrders = userOrders.getClosedOrders();
-        for (Order closeOrder : closedOrders){
-            List<Item> itemsInClosedOrder = closeOrder.getItems();
-            for (Item orderItem : itemsInClosedOrder){
-                int itemId = orderItem.getItemId();
-                int quantityInOrder = orderItem.getQuantity();
-                String buyItem = itemService.buyItem(itemId, quantityInOrder);
-                if (buyItem.contains("failed")){
-                    return buyItem;
-                }
-            }
-        }
+//        List<Order> closedOrders = userOrders.getClosedOrders();
+//        for (Order closeOrder : closedOrders){
+//            List<Item> itemsInClosedOrder = closeOrder.getItems();
+//            for (Item orderItem : itemsInClosedOrder){
+//                int itemId = orderItem.getItemId();
+//                int quantityInOrder = orderItem.getQuantity();
+//                String buyItem = itemService.buyItem(itemId, quantityInOrder);
+//                if (buyItem.contains("failed")){
+//                    return buyItem;
+//                }
+//            }
+//        }
         return orderRepository.closeOpenOrder(username);
     }
 
