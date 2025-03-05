@@ -42,7 +42,7 @@ public class Validation {
         return Pattern.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{8,}$", password);
     }
 
-    public static String validateUser(String firstName, String lastName, String email, String phone, String address, String username, String password){
+    public static String validateUserForRegister(String firstName, String lastName, String email, String phone, String address, String username, String password){
         if(!isValidName(firstName)){
             return "First name must contain only between 2 and 30 characters in English";
         }
@@ -63,6 +63,28 @@ public class Validation {
         }
         if (!isValidPassword(password)){
             return "Password must contain at least 8 characters, one capital letter(A-Z), one lowercase letter(a-z), one digit (0-9). Can include special characters(!@#$%^&*)";
+        }
+        return null;
+    }
+
+    public static String validateUserForUpdate(String firstName, String lastName, String email, String phone, String address, String username){
+        if(!isValidName(firstName)){
+            return "First name must contain only between 2 and 30 characters in English";
+        }
+        if(!isValidName(lastName)){
+            return "Last name must contain only between 2 and 30 characters in English";
+        }
+        if(!isValidEmail(email)){
+            return "Invalid email address. Please enter a valid email in the format: example@email.com.";
+        }
+        if (!isValidPhoneNumber(phone)){
+            return "The phone number you entered is not valid. Please enter a valid Israeli phone number in the format: 05X-XXXXXXX / 05XXXXXXXX";
+        }
+        if (!isValidAddress(address)){
+            return "The address you entered is not valid. Please make sure it contains only valid characters(letters, numbers, spaces, commas, and hyphens) at least 3 characters";
+        }
+        if (!isValidUsername(username)){
+            return "Username can contain only English letters(uppercase and lowercase), Numbers(0-9), underscore, period and dash. Can contain 3 to 20 characters";
         }
         return null;
     }

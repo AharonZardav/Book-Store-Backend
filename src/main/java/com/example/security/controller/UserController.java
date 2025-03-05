@@ -51,14 +51,15 @@ public class UserController {
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PutMapping
-    public ResponseEntity<CustomUser> updateUser(@RequestHeader(value = "Authorization") String token, @RequestBody CustomUser updatedUser) {
+    public ResponseEntity<CustomUser> updateUser(@RequestHeader(value = "Authorization") String token, @RequestBody CustomUser userToUpdate) {
         try {
             String jwtToken = token.substring(7);
             String username = jwtUtil.extractUsername(jwtToken);
-            updatedUser.setUsername(username);
-            String result = userService.updateUser(updatedUser);
+            userToUpdate.setUsername(username);
+            String result = userService.updateUser(userToUpdate);
             if (result.contains("successfully")) {
-                return new ResponseEntity(result, HttpStatus.OK);
+                CustomUser updatedUser = userService.getUserByUsername(username);
+                return new ResponseEntity(updatedUser, HttpStatus.OK);
             }
             return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {

@@ -25,14 +25,12 @@ public class UserService {
                 user.getAddress() == null || user.getUsername() == null || user.getPassword() == null) {
             return "User not created: first name, last name, email, phone, address, username and password are required";
         }
-
         //Input integrity check
-        String userValidateResult = Validation.validateUser(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone(),
+        String userValidateResult = Validation.validateUserForRegister(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone(),
                 user.getAddress(), user.getUsername(), user.getPassword());
         if(userValidateResult != null){
             return "User not created: "+userValidateResult;
         }
-
         if (user.getRole() == Role.ADMIN){
             return "User not created: You are not allowed to set your role to ADMIN";
         }
@@ -53,7 +51,6 @@ public class UserService {
 
         //Default settings
         user.setEmail(user.getEmail().toLowerCase());
-
         return userRepository.register(user);
     }
 
@@ -73,12 +70,12 @@ public class UserService {
         //Checking that there are no empty fields
         if (updatedUser.getFirstName() == null || updatedUser.getLastName() == null || updatedUser.getEmail() == null || updatedUser.getPhone() == null ||
                 updatedUser.getAddress() == null) {
-            return "User not updated: first name, last name, email, phone and address cannot be empty";
+            return "User not updated: first name, last name, email and address cannot be empty";
         }
 
         //Input integrity check
-        String userValidateResult = Validation.validateUser(updatedUser.getFirstName(), updatedUser.getLastName(), updatedUser.getEmail(),
-                updatedUser.getPhone(), updatedUser.getAddress(), updatedUser.getUsername(), updatedUser.getPassword());
+        String userValidateResult = Validation.validateUserForUpdate(updatedUser.getFirstName(), updatedUser.getLastName(), updatedUser.getEmail(),
+                updatedUser.getPhone(), updatedUser.getAddress(), updatedUser.getUsername());
         if(userValidateResult != null){
             return "User not updated: "+userValidateResult;
         }
