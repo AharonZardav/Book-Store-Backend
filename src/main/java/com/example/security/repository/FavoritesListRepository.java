@@ -27,10 +27,10 @@ public class FavoritesListRepository {
         }
     }
 
-    public boolean isItemIsFavorite(int itemId){
+    public boolean isItemIsFavorite(String username, int itemId){
         try {
-            String sql = String.format("SELECT COUNT (*) FROM %s WHERE item_id = ?", FAVORITES_LIST_TABLE);
-            Integer count = jdbcTemplate.queryForObject(sql, Integer.class, itemId);
+            String sql = String.format("SELECT COUNT (*) FROM %s WHERE username = ? AND item_id = ?", FAVORITES_LIST_TABLE);
+            Integer count = jdbcTemplate.queryForObject(sql, Integer.class, username, itemId);
             return (count != null && count > 0);
         } catch (Exception e){
             System.out.println(e.getMessage());

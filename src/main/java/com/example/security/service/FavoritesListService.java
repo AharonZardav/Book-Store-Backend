@@ -28,7 +28,7 @@ public class FavoritesListService {
         if (item == null) {
             return "Item not added: Item with this title dose not exist";
         }
-        if (favoritesListRepository.isItemIsFavorite(item.getItemId())){
+        if (favoritesListRepository.isItemIsFavorite(username, item.getItemId())){
             return "Item not added: The item already exists in your favorites list";
         }
         return favoritesListRepository.addItemToFavoriteList(username, item.getItemId());
@@ -42,7 +42,7 @@ public class FavoritesListService {
         if (item == null) {
             return "Item not removed: Item with this title dose not exist";
         }
-        if (!favoritesListRepository.isItemIsFavorite(item.getItemId())){
+        if (!favoritesListRepository.isItemIsFavorite(username, item.getItemId())){
             return "Item not removed: You cannot remove an item that does not exist in your favorites list";
         }
         return favoritesListRepository.removeItemFromFavoriteList(username, item.getItemId());
