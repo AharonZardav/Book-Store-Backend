@@ -34,6 +34,17 @@ public class OrderRepository {
         }
     }
 
+    public String updateOpenOrderAddress(String username, String shippingAddress, int orderId){
+        try {
+            String sql = String.format("UPDATE %s SET shipping_address = ? WHERE username = ? AND order_id = ?", ORDERS_TABLE);
+            jdbcTemplate.update(sql, shippingAddress, username, orderId);
+            return "Shipping address in your order successfully updated";
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
     public boolean isOrderBelongToUser(String username, int orderId){
         try {
             String sql = String.format("SELECT COUNT(*) FROM %s WHERE order_id = ? AND username = ?", ORDERS_TABLE);

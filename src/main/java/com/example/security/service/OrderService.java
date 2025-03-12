@@ -143,7 +143,7 @@ public class OrderService {
             }
             Item item = itemService.getItemByTitle(title);
             if (item == null) {
-                return "Item not added: Item with this title dose not exist";
+                return "Item not removed: Item with this title dose not exist";
             }
             int itemId = item.getItemId();
             int existingQuantityInOrder = orderRepository.findItemQuantityInOrder(orderId, itemId);
@@ -168,6 +168,24 @@ public class OrderService {
             }
             return orderRepository.updateItemQuantityInOrder(orderId, itemId, updatedQuantity);
         }
+    }
+
+    public String updateOrderAddress(String username, String shippingAddress){
+        if(shippingAddress == null){
+            return "Order shipping address not updated: Shipping address required";
+        }
+
+        String addressValidateResult = Validation.validateAddress(shippingAddress);
+        if (addressValidateResult != null){
+            return "Order address not updated: "+addressValidateResult;
+        }
+
+        Order openOrder = orderRepository.findOpenUserOrder(username);
+        if (openOrder == null){
+            return "Order address not updated: You don't have an open order";
+        }
+
+        return orderRepository.updateOpenOrderAddress(username, shippingAddress, openOrder.getOrderId());
     }
 
     public String closeOrder(String username){

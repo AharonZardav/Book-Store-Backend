@@ -74,6 +74,28 @@ public class OrderController {
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PutMapping(value = "/update-address")
+    public ResponseEntity<String> updateOrderAddress(@RequestHeader(value = "Authorization") String token, @RequestBody ItemRequest itemRequest){
+        try {
+            String jwtToken = token.substring(7);
+            String username = jwtUtil.extractUsername(jwtToken);
+
+            //checks if the order sent belongs to the authorized user
+            if (!username.equals(itemRequest.getUsername())){
+                return new ResponseEntity("You are not allowed to access this function", HttpStatus.UNAUTHORIZED);
+            }
+
+            String result = orderService.updateOrderAddress(username, itemRequest.getShippingAddress());
+            if (result.contains("successfully")) {
+                return new ResponseEntity(result, HttpStatus.OK);
+            }
+            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping(value = "/payment")
     public ResponseEntity<String> closeOpenOrder(@RequestHeader(value = "Authorization") String token){
         try {
