@@ -41,7 +41,7 @@ public class OrderController {
                 return new ResponseEntity("You are not allowed to access this function", HttpStatus.UNAUTHORIZED);
             }
 
-            String result = orderService.addItemToOrder(itemRequest.getUsername(), itemRequest.getTitle(), itemRequest.getQuantity(), itemRequest.getShippingAddress());
+            String result = orderService.addItemToOrder(username, itemRequest.getTitle(), itemRequest.getQuantity(), itemRequest.getShippingAddress());
             if (result.contains("successfully")) {
                 return new ResponseEntity(result, HttpStatus.CREATED);
             }

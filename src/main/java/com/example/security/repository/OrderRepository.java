@@ -5,11 +5,13 @@ import com.example.security.model.order.Order;
 import com.example.security.model.enums.Status;
 import com.example.security.repository.mapper.ItemMapper;
 import com.example.security.repository.mapper.OrderMapper;
+import com.example.security.repository.mapper.OrderWithItemsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -53,26 +55,6 @@ public class OrderRepository {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
-        }
-    }
-
-    public boolean isItemInOrder(int orderId, int itemId){
-        try {
-            String sql = String.format("SELECT COUNT(*) FROM %s WHERE order_id = ? AND item_id = ?", ORDERS_ITEMS_TABLE);
-            Integer count = jdbcTemplate.queryForObject(sql, Integer.class, orderId, itemId);
-            return ((count != null) && (count > 0));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
-
-    public int findItemQuantityInOrder(int orderId, int itemId) {
-        try {
-            String sql = String.format("SELECT quantity_in_order FROM %s WHERE order_id = ? AND item_id = ?", ORDERS_ITEMS_TABLE);
-            return jdbcTemplate.queryForObject(sql, Integer.class, orderId, itemId);
-        } catch (Exception e) {
-            return 0;
         }
     }
 
@@ -131,44 +113,52 @@ public class OrderRepository {
         }
     }
 
-    public Order findOpenUserOrder(String username) {
+    public Order findOpenUserOrderWithItems(String username) {
         try {
-            String sql = String.format("SELECT * FROM %s WHERE username = ? AND order_status = ?", ORDERS_TABLE);
-            return jdbcTemplate.queryForObject(sql, new OrderMapper(), username, Status.OPEN.name());
+            String sql = String.format("SELECT o.order_id, o.username, o.order_status, o.order_date, o.shipping_address, " +
+                    "i.item_id, i.title, i.image_path, i.price, " +
+                    "oi.quantity_in_order as quantity " +
+                    "FROM %s o " +
+                    "LEFT JOIN %s oi ON o.order_id = oi.order_id " +
+                    "LEFT JOIN %s i ON oi.item_id = i.item_id " +
+                    "WHERE o.username = ? AND o.order_status = ?", ORDERS_TABLE, ORDERS_ITEMS_TABLE, ITEMS_TABLE);
+            List<Order> orders = jdbcTemplate.query(sql, new OrderWithItemsMapper(), username, Status.OPEN.name());
+            return orders.isEmpty() ? null : orders.getFirst();
         } catch (Exception e){
             System.out.println(e.getMessage());
             return null;
         }
     }
 
-    public List<Item> findOrderItems(int orderId) {
+    public List<Order> findAllClosedUserOrdersWithItems(String username) {
         try {
-            String sql = String.format("SELECT i.item_id, i.title, i.image_path, i.price, oi.quantity_in_order as quantity FROM %s oi JOIN %s i ON oi.item_id = i.item_id WHERE oi.order_id = ?", ORDERS_ITEMS_TABLE, ITEMS_TABLE);
-            return jdbcTemplate.query(sql, new ItemMapper(), orderId);
+            String sql = String.format("SELECT o.order_id, o.username, o.order_status, o.order_date, o.shipping_address, " +
+                    "i.item_id, i.title, i.image_path, i.price, " +
+                    "oi.quantity_in_order as quantity " +
+                    "FROM %s o " +
+                    "LEFT JOIN %s oi ON o.order_id = oi.order_id " +
+                    "LEFT JOIN %s i ON oi.item_id = i.item_id " +
+                    "WHERE o.username = ? AND o.order_status = ?", ORDERS_TABLE, ORDERS_ITEMS_TABLE, ITEMS_TABLE);
+            return jdbcTemplate.query(sql, new OrderWithItemsMapper(), username, Status.CLOSE.name());
         } catch (Exception e){
             System.out.println(e.getMessage());
-            return null;
+            return Collections.emptyList();
         }
     }
 
-    public boolean isOrderExist(int orderId) {
+    public List<Order> findAllUserOrdersWithItems(String username) {
         try {
-            String sql = String.format("SELECT COUNT(*) FROM %s WHERE order_id = ?", ORDERS_TABLE);
-            Integer count = jdbcTemplate.queryForObject(sql, Integer.class, orderId);
-            return (count != null && count > 0);
+            String sql = String.format("SELECT o.order_id, o.username, o.order_status, o.order_date, o.shipping_address, " +
+                    "i.item_id, i.title, i.image_path, i.price, " +
+                    "oi.quantity_in_order as quantity " +
+                    "FROM %s o " +
+                    "LEFT JOIN %s oi ON o.order_id = oi.order_id " +
+                    "LEFT JOIN %s i ON oi.item_id = i.item_id " +
+                    "WHERE o.username = ?", ORDERS_TABLE, ORDERS_ITEMS_TABLE, ITEMS_TABLE);
+            return jdbcTemplate.query(sql, new OrderWithItemsMapper(), username);
         } catch (Exception e){
             System.out.println(e.getMessage());
-            return false;
-        }
-    }
-
-    public List<Order> findAllClosedUserOrders(String username) {
-        try {
-            String sql = String.format("SELECT * FROM %s WHERE username = ? AND order_status = ?", ORDERS_TABLE);
-            return jdbcTemplate.query(sql, new OrderMapper(), username, Status.CLOSE.name());
-        } catch (Exception e){
-            System.out.println(e.getMessage());
-            return null;
+            return Collections.emptyList();
         }
     }
 }

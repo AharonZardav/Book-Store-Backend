@@ -47,7 +47,7 @@ public class UserService {
 
         //password encryption with Bcrypt
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        System.out.println("Encoded password: " + user.getPassword()); // Log the encoded password
+//        System.out.println("Encoded password: " + user.getPassword()); // Log the encoded password
 
         //Default settings
         user.setEmail(user.getEmail().toLowerCase());

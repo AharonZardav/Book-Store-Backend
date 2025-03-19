@@ -55,6 +55,10 @@ CREATE TABLE favorites_list (
 INSERT INTO users(first_name, last_name, email, phone, address, username, password)
 VALUES('Aharon', 'Zardav', 'aharonzazrdav8@gmail.com', '0503337936', 'Ahisamach, Shivaat Hminim 21', 'aharonzardav', '$2a$10$sBSKLbWjWLwhqor4yNKz8e/pbHnDi2TnfPnJDbK8yGQwqZ5ZRuJEm');
 
+--username: Admin || password: Az123321@
+INSERT INTO users(first_name, last_name, email, phone, address, username, password, role)
+VALUES('Admin', 'Admin', 'Admin@gmail.com', '0500000000', 'Admin', 'Admin', '$2a$10$sBSKLbWjWLwhqor4yNKz8e/pbHnDi2TnfPnJDbK8yGQwqZ5ZRuJEm', 'ADMIN');
+
 INSERT INTO items(title, image_path, price, quantity)
 VALUES
     ('השקעות לעצלנים','https://www.e-vrit.co.il/Images/Products/NewBO/Products/21677/tamir_mandovsky500x790.jpg', 49.50, 20),

@@ -49,10 +49,10 @@ public class FavoritesListService {
     }
 
     public String removeAllItemsFromFavoriteList(String username){
-        List<Item> favoriteItemList = favoritesListRepository.findFavoriteItems(username);
-        if (favoriteItemList == null || favoriteItemList.isEmpty()){
-            return "Favorites list not updated: Your Favorites list is already empty";
-        }
+//        List<Item> favoriteItemList = favoritesListRepository.findFavoriteItems(username);
+//        if (favoriteItemList == null || favoriteItemList.isEmpty()){
+//            return "Favorites list not updated: Your Favorites list is already empty";
+//        }
         return favoritesListRepository.removeAllItemsFromFavoriteList(username);
     }
 }

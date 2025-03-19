@@ -41,7 +41,7 @@ public class UserController {
             String username = jwtUtil.extractUsername(jwtToken);
             CustomUser user = userService.getUserByUsername(username);
             if (user == null){
-                return new ResponseEntity(user, HttpStatus.NOT_FOUND);
+                return new ResponseEntity(null, HttpStatus.NOT_FOUND);
             }
             return ResponseEntity.ok(user);
         } catch (Exception e) {
